@@ -1,28 +1,22 @@
+
 import streamlit as st
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 def inspect_chroma(vectorstore):
-    st.sidebar.markdown("🧪 **ChromaDB Inspector**")
+    """Enhanced ChromaDB Inspector with better error handling and display"""
+    st.sidebar.markdown("### 🔍 ChromaDB Inspector")
     
-    # Show basic info
+    # Show basic info with more details
     try:
-        doc_count = vectorstore._collection.count()
-        st.sidebar.success(f"🔎 {doc_count} documents stored in ChromaDB.")
+        collection = vectorstore._collection
+        doc_count = collection.count()
+        st.sidebar.success(f"✅ Documents stored: **{doc_count}**")
+
+        
+        
+        # Display collection metadata
     except Exception as e:
-        st.sidebar.error("Could not fetch document count.")
-        st.sidebar.code(str(e))
-
-    # Search inside the vectorstore
-    query = st.sidebar.text_input("🔍 Test a query against ChromaDB")
-
-    if query:
-        try:
-            results = vectorstore.similarity_search(query, k=3)
-            st.sidebar.markdown("### Top Matching Chunks:")
-            for i, doc in enumerate(results):
-                st.sidebar.markdown(f"**Result {i+1}:**")
-                st.sidebar.markdown(doc.page_content[:300] + "...")
-                st.sidebar.markdown("---")
-        except Exception as e:
-            st.sidebar.error("Error querying ChromaDB")
-            st.sidebar.code(str(e))
+         st.sidebar.error("⚠️ Could not fetch ChromaDB information")
+         st.sidebar.exception(e)  # More detailed error than str(e)
+    
+    

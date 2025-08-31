@@ -1,19 +1,26 @@
 import os
-from langchain_groq import ChatGroq
-from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
+from langchain.chains import RetrievalQA
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
 def get_llm_chain(vectorstore):
+    groq_api_key = os.getenv("GROQ_API_KEY")
+
+    if not groq_api_key:
+        raise ValueError("❌ GROQ_API_KEY is missing. Check your .env file.")
+
     llm = ChatGroq(
-        groq_api_key=os.environ.get("GROQ_API_KEY"),
-        model_name="llama3-8b-8192"
+        api_key=groq_api_key,
+        model_name="llama-3.1-8b-instant"
     )
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-    return RetrievalQA.from_chain_type(
+
+    qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
-        retriever=retriever,
+        retriever=vectorstore.as_retriever(),
         return_source_documents=True
     )
+
+    return qa_chain

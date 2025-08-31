@@ -1,27 +1,34 @@
 import warnings
 import logging
 import streamlit as st
-
+import os
 # Local modules
 from modules.chat import display_chat_history, handle_user_input, download_chat_history
-from modules.pdf_handler import upload_pdfs
+from modules.file_handler import upload_files, save_uploaded_files, extract_text_from_file
 from modules.vectorstore import load_vectorstore
 from modules.llm import get_llm_chain
 from modules.chroma_inspector import inspect_chroma
+from dotenv import load_dotenv
+from langchain_groq import ChatGroq
+
+load_dotenv()
+groq_api_key = os.getenv("GROQ_API_KEY")
 
 # Silence noisy logs
 warnings.filterwarnings("ignore")
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
 st.set_page_config(
-    page_title="RagBot!",     
+    page_title=" MindDoc-RAG",     
 )
 
-# App title
-st.title("Ask Ragbot! ")
 
-# Step 1: Upload PDFs + wait for submit
-uploaded_files, submitted = upload_pdfs()
+
+# App title
+st.title("Chat with your Document! (🧠+📄) ")
+
+# Step 1: Upload File + wait for submit
+uploaded_files, submitted = upload_files()
 
 # Step 2: If user clicks submit, update vectorstore
 if submitted and uploaded_files:

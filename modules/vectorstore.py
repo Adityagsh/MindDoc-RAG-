@@ -1,25 +1,32 @@
-from langchain.vectorstores import Chroma
-from langchain.document_loaders import PyPDFLoader
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma  #To create and manage the vector database 
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import Docx2txtLoader
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from modules.pdf_handler import save_uploaded_files
+from modules.file_handler import save_uploaded_files  # custom function to save the uploaded file
 import os
 
-PERSIST_DIR = "./chroma_store"
+PERSIST_DIR = "./chroma_store"  #drfine the folder to store vector database
+
 
 def load_vectorstore(uploaded_files):
     paths = save_uploaded_files(uploaded_files)
-
+    
     docs = []
     for path in paths:
-        loader = PyPDFLoader(path)
+        if path.endswith('.pdf'):
+            loader = PyPDFLoader(path)
+        elif path.endswith('.docx'):
+            loader = Docx2txtLoader(path)
+        else:
+            continue  # Skip unsupported file types
         docs.extend(loader.load())
-
+    
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     texts = splitter.split_documents(docs)
-
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L12-v2")
-
+    
+    embeddings = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
+    
     if os.path.exists(PERSIST_DIR) and os.listdir(PERSIST_DIR):
         # Append to existing
         vectorstore = Chroma(persist_directory=PERSIST_DIR, embedding_function=embeddings)
@@ -33,5 +40,5 @@ def load_vectorstore(uploaded_files):
             persist_directory=PERSIST_DIR
         )
         vectorstore.persist()
-
+    
     return vectorstore

@@ -1,3 +1,22 @@
-myenv
+# Ignore Python virtual environments
+venv/
+env/
+myenv/
+.venv/
+
+# Environment variables
 .env
-chroma_store
+
+# ChromaDB storage
+chroma_store/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.temp
+
+
