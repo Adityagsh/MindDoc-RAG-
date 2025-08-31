@@ -1,7 +1,7 @@
 import tempfile  # used to create temporary files 
 import streamlit as st  # Streamlit for web app
 from PyPDF2 import PdfReader  # PyPDF2 library for reading PDF files
-from docx import Document  # python-docx library for reading DOCX files
+from docx2txt import Document  # python-docx library for reading DOCX files
 
 def upload_files():
     """Handle both PDF and DOCX file uploads"""
@@ -34,4 +34,5 @@ def extract_text_from_file(file_path):
         text = " ".join([paragraph.text for paragraph in doc.paragraphs])
     else:
         raise ValueError("Unsupported file format")
+
     return text
