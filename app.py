@@ -49,4 +49,5 @@ if "vectorstore" in st.session_state:
     handle_user_input(get_llm_chain(st.session_state.vectorstore))
 
 # Step 6: Chat history export
-download_chat_history()
+
+
