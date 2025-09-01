@@ -3,7 +3,7 @@ from langchain.document_loaders import PyPDFLoader  # To load PDF document
 from langchain.document_loaders import Docx2txtLoader  # To load DOCX document
 from langchain.embeddings import HuggingFaceEmbeddings  # To convert text into embeddings [numerical vector]
 from langchain.text_splitter import RecursiveCharacterTextSplitter  #To split long text into smaller chunks
-from modules.file_handler import save_uploaded_files  # custom function to save the uploaded file
+from file_handler import save_uploaded_files  # custom function to save the uploaded file
 import os
 
 PERSIST_DIR = "./chroma_store"  #drfine the folder to store vector database
@@ -41,4 +41,5 @@ def load_vectorstore(uploaded_files):
         )
         vectorstore.persist()
     
+
     return vectorstore
