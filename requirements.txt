@@ -4,9 +4,12 @@ langchain-community
 chromadb
 PyPDF2
 python-docx
+langchain-groq
+llm
 sentence-transformers==2.2.2
 torch>=2.0.0
 transformers>=4.30.0
 huggingface-hub==0.23.0
+
 
 
