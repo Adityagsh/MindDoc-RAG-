@@ -1,6 +1,6 @@
 import tempfile  # used to create temporary files 
 import streamlit as st  # Streamlit for web app
-from PyPDF2 import PdfReader  # PyPDF2 library for reading PDF files
+from pypdf import PdfReader  # PyPDF2 library for reading PDF files
 from docx import Document  # python-docx library for reading DOCX files
 
 def upload_files():
@@ -36,4 +36,5 @@ def extract_text_from_file(file_path):
         raise ValueError("Unsupported file format")
 
     return text
+
 
