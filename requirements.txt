@@ -1,9 +1,18 @@
 streamlit
-pypdf
-python-docx
 langchain
+langchain-core
 langchain-community
+langchain-text-splitters
+langchain-huggingface
 langchain-groq
 chromadb
 sentence-transformers
+transformers
+torch
+huggingface-hub
+pypdf
+PyPDF2
+python-docx
+docx2txt
 python-dotenv
+pysqlite3-binary; sys_platform == 'linux'

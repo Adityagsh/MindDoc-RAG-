@@ -1,8 +1,8 @@
 from langchain_community.vectorstores import Chroma  #To create and manage the vector database 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import Docx2txtLoader
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from modules.file_handler import save_uploaded_files  # custom function to save the uploaded file
 import os
 
@@ -31,7 +31,6 @@ def load_vectorstore(uploaded_files):
         # Append to existing
         vectorstore = Chroma(persist_directory=PERSIST_DIR, embedding_function=embeddings)
         vectorstore.add_documents(texts)
-        vectorstore.persist()
     else:
         # Create new
         vectorstore = Chroma.from_documents(
@@ -39,6 +38,5 @@ def load_vectorstore(uploaded_files):
             embedding=embeddings,
             persist_directory=PERSIST_DIR
         )
-        vectorstore.persist()
     
     return vectorstore

@@ -15,14 +15,10 @@ def handle_user_input(chain):
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     try:
-        result = chain({"query": user_input})
+        result = chain.invoke({"query": user_input})
         response = result["result"]
         st.chat_message("assistant").markdown(response)
         st.session_state.messages.append({"role": "assistant", "content": response})
     except Exception as e:
         st.error(f"Error: {str(e)}")
 
-def download_chat_history():
-    if st.session_state.get("messages"):
-        content = "\n\n".join([f"{m['role'].upper()}: {m['content']}" for m in st.session_state.messages])
-        st.download_button("💾 Download Chat History", content, file_name="chat_history.txt", mime="text/plain")

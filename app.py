@@ -1,9 +1,16 @@
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
 import warnings
 import logging
 import streamlit as st
 import os
 # Local modules
-from modules.chat import display_chat_history, handle_user_input, download_chat_history
+from modules.chat import display_chat_history, handle_user_input
 from modules.file_handler import upload_files, save_uploaded_files, extract_text_from_file
 from modules.vectorstore import load_vectorstore
 from modules.llm import get_llm_chain
@@ -49,4 +56,4 @@ if "vectorstore" in st.session_state:
     handle_user_input(get_llm_chain(st.session_state.vectorstore))
 
 # Step 6: Chat history export
-download_chat_history()
+
